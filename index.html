@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #qrCodeCanvas {
+            margin-top: 15px;
+        }
+        .download-btn {
+            margin-top: 10px;
+            background-color: #28a745;
+        }
+        .download-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>QR Code Generator</h1>
+        <input type="text" id="urlInput" placeholder="Enter URL here">
+        <button id="generateBtn">Generate QR Code</button>
+        <div id="qrCodeCanvas"></div>
+        <button id="downloadBtn" class="download-btn" style="display: none;">Download QR Code</button>
+    </div>
+
+    <!-- Include QR Code styling library via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+
+    <script>
+        const qrCode = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            imageOptions: {
+                crossOrigin: "anonymous"
+            }
+        });
+
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const qrCodeCanvas = document.getElementById('qrCodeCanvas');
+        const urlInput = document.getElementById('urlInput');
+
+        generateBtn.addEventListener('click', () => {
+            const url = urlInput.value.trim();
+            if (url) {
+                qrCode.update({
+                    data: url
+                });
+                qrCode.append(qrCodeCanvas);
+                downloadBtn.style.display = 'block';
+            } else {
+                alert('Please enter a valid URL');
+            }
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            qrCode.download({ name: "qr_code", extension: "png" });
+        });
+    </script>
+
+</body>
+</html>
